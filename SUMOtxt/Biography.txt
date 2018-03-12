@@ -1,0 +1,543 @@
+;; ============================================================================
+;;                   Biography Ontology
+;; ============================================================================
+;; Created by: Valeria de Paiva (vdepaiva [at] reardencommerce [dot] com)
+;; REARDEN COMMERCE, INC.
+;; Created on: August 10, 2011
+;; ============================
+;; Revised version: March 2015
+;; By: Michal Svarny (michal [dot] svarny [at] gmail [dot] com)
+;; *** Note: The revision of Biography.kif is now in progress and the revised parts of the original Biography.kif are being moved to this version. ***
+;;
+;; Description:  This describes concepts related to biographies in Wikipedia,
+;; starting with the attributes described in Infoboxes.
+;; They are organized in templates described in http://en.wikipedia.org/wiki/Category:Infobox_templates
+
+;; Ontology dependencies for Biography.kif:
+;; Merge.kif
+;; Mid-level-ontology.kif,
+;; Media.kif
+;; Music.kif
+
+;; Access to and use of these products is governed by the GNU General Public
+;; License <http://www.gnu.org/copyleft/gpl.html>.
+;; By using these products, you agree to be bound by the terms  of the GPL.
+;; We ask the people using or referencing this work cite our primary paper:
+;; Niles, I., and Pease, A.  2001.  Towards a Standard Upper Ontology.  In
+;; Proceedings of the 2nd International Conference on Formal Ontology in
+;; Information Systems (FOIS-2001), Chris Welty and Barry Smith, eds,
+;; Ogunquit, Maine, October 17-19, 2001.  See also http://www.ontologyportal.org
+
+;; ================================
+;; Outline
+;; --------------------------------
+;; CEREMONIES and life events
+;; OCCUPATIONS
+;;   Professions
+;;   Skilled Occupations
+;;      The Criative Economy Occupations
+;; ================================
+;;---------------------------------------------------------------------
+;; CEREMONIES  and Life Events
+;;---------------------------------------------------------------------
+
+;;Wedding
+
+(documentation weddingdate EnglishLanguage "(weddingdate ?PERSON1 ?PERSON2 ?DAY) means that ?DAY is the day on which  ?PERSON1 and ?PERSON2 were married.")
+(domain weddingdate 1 Human)
+(domain weddingdate 2 Human)
+(domain weddingdate 3 Day)
+(instance weddingdate TernaryPredicate)
+
+(=>
+  (weddingdate ?PERSON1 ?PERSON2 ?DAY)
+  (exists (?WEDDING)
+    (and
+      (instance ?WEDDING Wedding)
+      (patient ?WEDDING ?PERSON1)
+      (patient ?WEDDING ?PERSON2)
+      (time ?WEDDING ?DAY))))
+
+;;Baptism
+
+(documentation baptismdate EnglishLanguage "(baptismdate ?PERSON1 ?DAY) means that ?DAY is the day on which  ?PERSON1 was baptized.")
+(domain baptismdate 1 Human)
+(domain baptismdate 2 Day)
+(instance baptismdate BinaryPredicate)
+
+(=>
+    (baptismdate ?PERSON ?DAY)
+    (exists (?BAPTISM)
+        (and
+            (instance ?BAPTISM Baptizing)
+            (experiencer ?BAPTISM ?PERSON)
+            (time ?BAPTISM ?DAY))))
+
+(documentation baptismplace EnglishLanguage "(baptismplace ?PERSON ?PLACE) means that ?PLACE is the place where the ?PERSON was baptized.")
+(domain baptismplace 1 Human)
+(domain baptismplace 2 Region)
+(instance baptismplace BinaryPredicate)
+
+(=>
+    (baptismplace ?PERSON ?PLACE)
+    (exists (?BAPTISM)
+        (and
+            (instance ?BAPTISM Baptizing)
+            (experiencer ?BAPTISM ?PERSON)
+            (eventLocated ?BAPTISM ?PLACE))))
+
+;; Burial
+
+(documentation burialplace EnglishLanguage "(burialplace ?INDIV ?PLACE) means that ?PLACE is the place where ?INDIV was buried.")
+(domain burialplace 1 Animal)
+(domain burialplace 2 Object)
+(instance burialplace BinaryPredicate)
+
+(=>
+    (burialplace ?INDIV ?PLACE)
+    (exists (?BURIAL)
+        (and
+            (instance ?BURIAL Burial)
+            (patient ?BURIAL ?INDIV)
+            (eventLocated ?BURIAL ?PLACE))))
+;;;--------------------------------------------------------------------
+;;; OCCUPATIONS
+;;;--------------------------------------------------------------------
+;;; using the lists from Wikipedia
+;;; http://en.wikipedia.org/wiki/Lists_of_people_by_occupation
+;;; http://en.wikipedia.org/wiki/Profession#List_of_professions
+
+;;------------------------------------------------------------
+;; Professions
+
+(instance Scientist Profession)
+(documentation Scientist EnglishLanguage "A person with advanced knowledge of one or more &%Sciences.")
+(=>
+  (attribute ?PERSON Scientist)
+  (hasExpertise ?PERSON Science))
+
+(instance Actuary Profession)
+(subAttribute Actuary Scientist)
+(documentation Actuary EnglishLanguage "An actuary is a business professional who deals with &%ActuaryScience,  the financial impact of risk and uncertainty.")
+
+(=>
+  (attribute ?PERSON Actuary)
+  (hasExpertise ?PERSON ActuaryScience))
+
+(instance Anthropologist Profession)
+(subAttribute Anthropologist Scientist)
+(documentation Anthropologist EnglishLanguage "A social scientist who specializes in &%Anthropology.")
+
+(=>
+  (attribute ?PERSON Anthropologist)
+  (hasExpertise ?PERSON Anthropology))
+
+(instance Archeologist Profession)
+(subAttribute Archeologist Scientist)
+(documentation Archeologist EnglishLanguage "Archeologists is someone who &%hasExpertise in &%Archeology")
+
+(=>
+  (attribute ?PERSON Archeologist)
+  (hasExpertise ?PERSON Archeology))
+
+(instance Architect Profession)
+(documentation Architect EnglishLanguage "An architect is a person trained in &%Architecture, the planning, design and oversight of the construction of &%Buildings.")
+
+(=>
+  (attribute ?PERSON Architect)
+  (hasExpertise ?PERSON Architecture))
+
+(instance Astronomer Profession)
+(subAttribute Astronomer Scientist)
+(documentation Astronomer EnglishLanguage "A &%Physicist who studies &%Astronomy.")
+
+(=>
+  (attribute ?PERSON Astronomer)
+  (hasExpertise ?PERSON Astronomy))
+
+(instance Biologist Profession)
+(subAttribute Biologist Scientist)
+(documentation Biologist EnglishLanguage "A &%Scientist who studies &%Biology that is living organisms.")
+
+(=>
+  (attribute ?PERSON Biologist)
+  (hasExpertise ?PERSON Biology))
+
+(instance Chemist Profession)
+(subAttribute Chemist Scientist)
+(documentation Chemist EnglishLanguage "A &%Scientist who specializes in &%Chemistry.")
+
+(=>
+  (attribute ?PERSON Chemist)
+  (hasExpertise ?PERSON Chemistry))
+
+(instance ComputerScientist Profession)
+(subAttribute ComputerScientist Scientist)
+(documentation ComputerScientist EnglishLanguage "A &%Scientist who specializes in &%ComputerScience.")
+
+(=>
+  (attribute ?PERSON ComputerScientist)
+  (hasExpertise ?PERSON ComputerScience))
+
+(instance Economist Profession)
+(subAttribute Economist Scientist)
+(documentation Economist EnglishLanguage "An expert in the science of &%Economics.")
+
+(=>
+(attribute ?PERSON Economist)
+(hasExpertise ?PERSON Economics))
+
+(instance Engineer Profession)
+(subAttribute Engineer Scientist)
+(documentation Engineer EnglishLanguage "A person who uses scientific knowledge to solve practical problems. A graduate from an &%Engineering school.")
+
+(=>
+  (attribute ?PERSON Engineer)
+  (hasExpertise ?PERSON Engineering))
+
+(subAttribute AeronauticalEngineer Engineer)
+
+(instance AeronauticalEngineer SkilledOccupation)
+(documentation AeronauticalEngineer EnglishLanguage "an &%Engineer concerned with &%Designing and &%Making of &%Aircrafts")
+
+(=>
+  (attribute ?X AeronauticalEngineer)
+  (exists (?SKILL)
+    (and
+      (hasSkill ?SKILL ?X)
+      (forall (?P)
+        (=>
+          (instance ?P ?SKILL)
+          (or
+            (exists (?CONS ?OBJ ?PT)
+              (and
+                (instance ?CONS Making)
+                (or
+                  (instance ?OBJ Aircraft)
+                  (and
+                    (instance ?OBJ ?PT)
+                    (typicalPart ?PT Aircraft)))
+                (result ?CONS ?OBJ)
+                (subProcess ?P ?CONS)))
+            (exists (?DESIGN ?PLAN ?OBJ ?PT)
+              (and
+                (instance ?DESIGN Designing)
+                (or
+                  (instance ?OBJ Aircraft)
+                  (and
+                    (instance ?OBJ ?PT)
+                    (typicalPart ?PT Aircraft)))
+                (result ?DESIGN ?PLAN)
+                (represents ?PLAN ?OBJ)
+                (subProcess ?P ?DESIGN)))))))))
+
+(instance Geographer Profession)
+(subAttribute Geographer Scientist)
+(documentation Geographer EnglishLanguage "An expert on &%Geography.")
+
+(=>
+  (attribute ?PERSON Geographer)
+  (hasExpertise ?PERSON Geography))
+
+(instance Geologist Profession)
+(subAttribute Geologist Scientist)
+(documentation Geologist EnglishLanguage " A specialist in &%Geology.")
+
+(=>
+  (attribute ?PERSON Geologist)
+  (hasExpertise ?PERSON Geology))
+
+(instance Historian Profession)
+(documentation Historian EnglishLanguage "A person who is an authority on &%History and who studies it and writes about it.")
+
+(=>
+  (attribute ?PERSON Historian)
+  (hasExpertise ?PERSON History))
+
+(instance Linguist Profession)
+(subAttribute Linguist Scientist)
+(documentation Linguist EnglishLanguage "A specialist in &%Linguistics.")
+
+(=>
+  (attribute ?PERSON Linguist)
+  (hasExpertise ?PERSON Linguistics))
+
+(instance Mathematician Profession)
+(documentation Mathematician EnglishLanguage "A person skilled in &%Mathematics.")
+
+(=>
+  (attribute ?PERSON Mathematician)
+  (hasExpertise ?PERSON Mathematics))
+
+(instance MedicalResearcher Profession)
+(subAttribute MedicalResearcher Scientist)
+(documentation MedicalResearcher EnglishLanguage "A &%Scientist who devotes himself to doing medical research.")
+
+(=>
+  (attribute ?PERSON MedicalResearcher)
+  (and
+    (attribute ?PERSON Researcher)
+    (hasExpertise ?PERSON MedicalScience)))
+
+(instance Paleontologist Profession)
+(subAttribute Paleontologist Scientist)
+(documentation Paleontologist EnglishLanguage "A specialist in paleontology, the earth science that studies fossil organisms and related remains.")
+
+(=>
+  (attribute ?PERSON Paleontologist)
+  (hasExpertise ?PERSON Paleontology))
+
+(instance Philosopher Profession)
+(documentation Philosopher EnglishLanguage "A specialist in &%Philosophy.")
+;; for philosophers wikipedia has   school_tradition, main interests, notable ideas, era, influences
+
+(=>
+  (attribute ?PERSON Philosopher)
+  (hasExpertise ?PERSON Philosophy))
+
+(instance Psychologist Profession)
+(subAttribute Psychologist Scientist)
+(documentation Psychologist EnglishLanguage "A scientist trained in &%Psychology.")
+
+(=>
+  (attribute ?PERSON Psychologist)
+  (hasExpertise ?PERSON Psychology))
+
+(instance Physicist Profession)
+(subAttribute Physicist Scientist)
+(documentation Physicist EnglishLanguage " A scientist trained in &%Physics.")
+
+(=>
+  (attribute ?PERSON Physicist)
+  (hasExpertise ?PERSON Physics))
+
+(instance PoliticalScientist Profession)
+(subAttribute PoliticalScientist Scientist)
+(documentation PoliticalScientist EnglishLanguage "A social scientist specializing &%PoliticalScience,  the study of government.")
+
+(=>
+  (attribute ?PERSON PoliticalScientist)
+  (hasExpertise ?PERSON PoliticalScience))
+
+(instance Librarian Profession)
+(subAttribute Librarian Scientist)
+(documentation Librarian EnglishLanguage "A professional person trained in library science and engaged in &%Library services.")
+
+(=>
+  (attribute ?PERSON Librarian)
+  (hasExpertise ?PERSON LibraryScience))
+
+(instance RegisteredNurse Profession)
+(documentation RegisteredNurse EnglishLanguage "A graduate nurse who has passed examinations for registration.")
+
+(=>
+  (attribute ?PERSON RegisteredNurse)
+  (hasExpertise ?PERSON TherapeuticProcess))
+
+(instance Sociologist Profession)
+(subAttribute Sociologist Scientist)
+(documentation Sociologist EnglishLanguage "A social scientist who studies the institutions and development of human society as part of &%Sociology.")
+
+(=>
+  (attribute ?PERSON Sociologist)
+  (hasExpertise ?PERSON Sociology))
+
+(instance Statistician Profession)
+(documentation Statistician EnglishLanguage "A &%Mathematician who specializes in &%Statistics.")
+
+(=>
+  (attribute ?PERSON Statistician)
+  (hasExpertise ?PERSON Statistics))
+
+(instance Theologian Profession)
+(documentation Theologian EnglishLanguage "Someone who is learned in &%Theology or who speculates about theology.")
+
+(=>
+  (attribute ?PERSON Theologian)
+  (hasExpertise ?PERSON Theology))
+
+(instance Veterinarian Profession)
+(subAttribute Veterinarian Scientist)
+(documentation Veterinarian EnglishLanguage "A doctor who practices veterinary medicine.")
+
+(=>
+  (attribute ?PERSON Veterinarian)
+  (hasExpertise ?PERSON VeterinaryScience))
+
+(instance Zoologist Profession)
+(subAttribute Zoologist Scientist)
+(documentation Zoologist EnglishLanguage "A specialist in the branch of &%Biology dealing with animals.")
+
+(=>
+  (attribute ?PERSON Zoologist)
+  (hasExpertise ?PERSON Zoology))
+
+(instance Botanist Profession)
+(subAttribute Botanist Scientist)
+(documentation Botanist EnglishLanguage "A biologist specializing in the study of plants.")
+
+(=>
+  (attribute ?PERSON Botanist)
+  (hasExpertise ?PERSON Botany))
+;-------------------------------------------------------------
+;; Management Professions
+;;------------------------------------------------------------
+; Managerial Professions include Financial Analysts, Quantity Surveyors, Estate Agents, etc...
+
+
+;;;--------------------------------------------------------------------
+;;; Skilled Occupations
+;;;--------------------------------------------------------------------
+;;; SkilledOccupation is defined in Mid-level-ontology.kif, here are more specific occupations that are instances or subclasses of SkilledOccupation.
+
+(instance Pilot SkilledOccupation)
+(documentation Pilot EnglishLanguage "Any &%SkilledOccupation that involves &%Driving an &%Aircraft")
+(termFormat EnglishLanguage Pilot "Pilot")
+
+(=>
+  (and
+    (instance ?PILOT Human)
+    (attribute ?PILOT Pilot))
+  (hasSkill FlyingAircraft ?PILOT))
+
+(instance Astronaut SkilledOccupation)
+(documentation Astronaut EnglishLanguage "A person trained to travel in a spacecraft.")
+
+(=>
+  (attribute ?ASTRONAUT Astronaut)
+  (hasSkill SpaceTransportation ?ASTRONAUT))
+
+(instance Photographer SkilledOccupation)
+(documentation Photographer EnglishLanguage "A photographer is a person who takes photographs, for profit or for fun.")
+
+(=>
+  (attribute ?PERSON Photographer)
+  (hasSkill Photographing ?PERSON))
+
+(instance Tailor SkilledOccupation)
+(documentation Tailor EnglishLanguage "A tailor is a person who makes, repairs, or alters clothing professionally, especially suits and men's clothing.")
+
+(=>
+  (attribute ?PERSON Tailor)
+  (hasSkill Sewing ?PERSON))
+;;----------------------------------------------------------------------------------
+;; The Criative Economy Occupations  from http://en.wikipedia.org/wiki/Creative_industries
+;;----------------------------------------------------------------------------------
+
+
+
+;;;;;ArtisticOccupation
+;;msvarny: ArtisticOccupation is conflicting a bit with EntertainmentProfession defined in Mid-level-ontology.kif, but the name of this term itself seemed to me more appropriate so I will merge both terms using the name ArtisticOccupation.
+
+(subclass ArtisticOccupation SkilledOccupation)
+(documentation ArtisticOccupation EnglishLanguage "People in design, education, arts, music and entertainment, whose economic function is to create new ideas, new technology and/ or creative content. [Will be merged with EntertainmentProfession in in Mid-level-ontology.kif using the name ArtisticOccupation, msvarny]")
+
+(instance Dancer ArtisticOccupation)
+(documentation Dancer EnglishLanguage "A dancer is one who performs dance, either professionally or for personal enjoyment.")
+
+(=>
+  (attribute ?PERSON Dancer)
+  (hasSkill Dancing ?PERSON))
+
+(instance Designer ArtisticOccupation)
+(documentation Designer EnglishLanguage "Someone who creates plans to be used in making something, such as gardens, buildings, clothes, artwork, etc.")
+
+(=>
+  (attribute ?PERSON Designer)
+  (hasSkill Designing ?PERSON))
+
+(instance Draftsman ArtisticOccupation)
+(documentation Draftsman EnglishLanguage "An artist skilled at drawing, an skilled worker who draws plans of buildings or machines.")
+
+(=>
+  (attribute ?PERSON Draftsman)
+  (hasSkill Drawing ?PERSON))
+
+(instance Painter ArtisticOccupation)
+(documentation Painter EnglishLanguage "An artist who paints.")
+
+(=>
+  (attribute ?PERSON Painter)
+  (hasSkill ArtPainting ?PERSON))
+
+(instance Sculptor ArtisticOccupation)
+(documentation Sculptor EnglishLanguage "An artist who creates &%Sculptures.")
+
+(=>
+  (attribute ?PERSON Sculptor)
+  (hasSkill Sculpting ?PERSON))
+
+(instance Writer ArtisticOccupation)
+(documentation Writer EnglishLanguage "Someone who writes (books or stories or articles or the like) professionally (for pay).(WordNet definition). Which means it is an &%ArtisticOccupation, which implies that the person who has this &%Attribute has the skill to &%WrittenCommunication and &%Writing. Also it implies that there exists a &%Text created by the &%Writer.")
+;possible subs   Novelist, playwright, poet, essayist, critic
+
+(=>
+  (attribute ?PERSON Writer)
+  (hasSkill WrittenCommunication ?PERSON))
+
+(=>
+    (attribute ?PERSON Writer)
+    (hasSkill Writing ?PERSON))
+
+(=>
+  (attribute ?X Writer)
+  (exists (?OBJ)
+    (and
+      (instance ?PROC Writing)
+      (or
+        (instance ?OBJ Text)
+        (instance ?OBJ Document))
+      (agent ?PROC ?X)
+      (result ?PROC ?OBJ))))
+
+(=>
+  (and
+    (attribute ?X Writer)
+    (or
+      (instance ?TEXT Text)
+      (instance ?TEXT Document))
+    (instance ?WRITE Writing)
+    (agent ?WRITE ?X)
+    (patient ?WRITE ?TEXT))
+  (and
+    (authors ?X ?TEXT)
+    (result ?WRITE ?TEXT)))
+
+(=>
+  (and
+    (instance ?PERSON Human)
+    (instance ?WRITE Writing)
+    (or
+      (instance ?TEXT Text)
+      (instance ?TEXT Document))
+    (result ?WRITE ?TEXT)
+    (agent ?WRITE ?PERSON))
+  (and
+    (authors ?PERSON ?TEXT)
+    (attribute ?PERSON Writer)))
+
+(subAttribute VoiceActor Actor)
+(instance VoiceActor ArtisticOccupation)
+(documentation VoiceActor EnglishLanguage "Like an &%Actor, a &%VoiceActor is also an agent of the dramatic performance.  However, only his voice can be heard and not the actor himself")
+(termFormat EnglishLanguage VoiceActor "voice actor")
+
+(=>
+  (and
+    (attribute ?ACTOR VoiceActor)
+    (instance ?DRAMA DramaticActing)
+    (agent ?DRAMA ?ACTOR)
+    (instance ?SPEAK LinguisticCommunication)
+    (agent ?SPEAK ?ACTOR)
+    (subProcess ?SPEAK ?DRAMA))
+  (and
+    (not
+      (exists (?S)
+        (and
+          (instance ?S Seeing)
+          (patient ?S ?ACTOR)
+          (agent ?S ?VIEWER))))
+    (exists (?H)
+      (and
+        (instance ?H Hearing)
+        (patient ?H ?ACTOR)
+        (agent ?H ?VIEWER)))))
